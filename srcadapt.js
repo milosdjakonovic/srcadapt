@@ -25,6 +25,19 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
       }
     }
     
+    function inarray(a,b){
+        
+        if( Array.prototype.indexOf ){
+            return !!~a.indexOf(b)
+        }
+        
+        var t=a.length; 
+        for(i=0;i<t;i++){
+            if(a[i] === b) return true
+        } 
+        return false 
+    }
+    
     /**
      * Modernizr, thank you
     **/
@@ -32,47 +45,66 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
         return typeof obj === type;
     }   
     
-    var native = ( function(){return ('matchMedia' in win) ? true : false } )(),
-        body   = doc.body || d.getElementsByTagName('body')[0],
+    var
+        body   = doc.body || doc.getElementsByTagName('body')[0],
         doel   = doc.documentElement,
         
         width  = Math.max(doel.clientWidth, win.innerWidth || 0),
-        //height = Math.max(doel.clientHeight, win.innerHeight  || 0),
+
+        isMaxWidth = function(num){
+            return num > width
+        },
         
+        isMinWidth = function(num){
+            return num < width
+        },
+        
+        
+        /**
+         *
+         * gets all available attrs
+         * @return ['data-xs','data-sm','data-md','data-lg']....
+         *
+        **/
         getAllAvailable = function(node){
             var available = [];
             _a(['xs','sm','md','lg'], function(index, member){
                 var attr = node.getAttribute('data-' + member);
-                if( is(attr, 'string') && !attr==='0' ){
-                    available.push(attr);
+                if( is(attr, 'string') && !attr=='0' ){
+                    available.push( 'data-' + member);
                 }
             });
             return available;
         },
         
-        getApplayable = function(node){
-            var available = getAllAvailable(node);
-            //let's say, viewport is 960px... how to check
-            /**
-             * xs - maxwidth 767px isMaxWidth767() return attr
-             * sm - minwidth 768   isMinWidth768() && !isMinWidth992() && !isMinWidth1200()
-             * md - minwidth 992   isMinWidth992() && !isMinWidth1200()
-             * lg - minwidth 1200  isMinWidth1200()
-            **/
+        /**
+         *
+         * gets what matches according to viewport width
+         * @return 'data-xs' | 'data-sm' | 'data-md' | 'data-lg'
+         *
+        **/
+        getApplicable = function(node){
+            var available = getAllAvailable(node),
+                _return;
             
+            _a( available, function(index, member){
+                if( member==='data-xs' && isMaxWidth(767) )                     {_return = 'data-xs'; return}
+                if( member==='data-sm' && isMinWidth(768) && !isMinWidth(992) ) {_return = 'data-sm'; return}
+                if( member==='data-md' && isMinWidth(992) && !isMinWidth(1200)) {_return = 'data-md'; return}
+                if( member==='data-lg' && isMinWidth(1200))                     {_return = 'data-lg'; return}
+            });            
+            
+            return _return;
+        
         },
         
-        viewport2attrib = function(node){
-            var availableimgs = getApplayable(node), // example [ 'xs', 'md', 'lg']
-                u = 'undefined';
-            if( ! is(availableimgs['lg'], u) ) return 'lg';
-            if( ! is(availableimgs['md'], u) ) return 'md';
-            if( ! is(availableimgs['sm'], u) ) return 'sm';
-            if( ! is(availableimgs['xs'], u) ) return 'xs';
-        },
-        
+        /**
+         * 
+         * adapts single <img> Element
+         *
+        **/
         adapt = function(node){
-            var attrib = 'data-' + viewport2attrib(node),
+            var attrib = getApplicable(node),
             newsrc = node.getAttribute(attrib);
             if(node.src !== newsrc)
             node.src = newsrc;
@@ -94,8 +126,20 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
             } else {
                 doJob(body.querySelectorAll(nodeorselector));
             }
+        },
+        //For now, it seems to me that this function may run unbounced,
+        //because of inexpensiveness of calculation
+        //or maybe I'm wrong
+        
+        //ok, I'm wrong
+        updateDimension = function(){
+            width  = Math.max(doel.clientWidth, win.innerWidth || 0);
         }
-    
+        
+        if(win.addEventListener)
+            win.addEventListener('resize',   updateDimension, false);
+        else 
+            win.attachEvent     ('onresize', updateDimension       );
     
     win.srcadapt = srcadapt;
 })(window,document);
