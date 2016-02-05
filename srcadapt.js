@@ -42,7 +42,7 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
      * Modernizr, thank you
     **/
     function is(obj, type) {
-        return typeof obj === type;
+        return typeof obj === type
     }   
     
     var
@@ -50,14 +50,25 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
         doel   = doc.documentElement,
         
         //width  = Math.max(doel.clientWidth, win.innerWidth || 0),
-		width  = (function(){  if(win.innerWidth) return win.innerWidth; else return doel.clientWidth })(),
+		width  = (function(){
+			if(win.innerWidth) return win.innerWidth; 
+			else return doel.clientWidth
+		})(),
+		
+		nativemq = (function(){
+			return ('matchMedia' in win) ? true : false 
+		} )(),
 
         isMaxWidth = function(num){
-            return num > width
+			if(nativemq)
+				return win.matchMedia('(max-width: ' + num + 'px)').matches;
+            return num >= width
         },
         
         isMinWidth = function(num){
-            return num < width
+			if(nativemq)
+				return win.matchMedia('(min-width: ' + num + 'px)').matches;
+            return num <= width
         },
         
         
@@ -80,7 +91,7 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
         
         /**
          *
-         * gets what matches according to viewport width
+         * gets what ( best! ) matches according to viewport width and provided images
          * @return 'data-xs' | 'data-sm' | 'data-md' | 'data-lg'
          *
         **/
@@ -136,7 +147,12 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
                 doJob(body.querySelectorAll(nodeorselector));
             }
         },
-		
+		/**
+		 *
+		 * get all current srcadapt images by querying the DOM
+		 * TODO: mechanism to cache all prev processed imgs locally
+		 * and retrieve them from local variable (e.g. without querying the DOM)
+		**/
 		getSrcadaptImgs = function(){
 			if(Element.prototype.getElementsByClassName)
 				return body.getElementsByClassName('srcadapt');
@@ -144,7 +160,12 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
 		},
 		
         updateAll = function(){
-            width  = (function(){  if(win.innerWidth) return win.innerWidth; else return doel.clientWidth })();
+			if(!nativemq)
+				width = (function(){
+					if(win.innerWidth) return win.innerWidth; 
+					else return doel.clientWidth 
+				})();
+
 			var srcadaptImgs = getSrcadaptImgs();
 			doJob(srcadaptImgs);
         },
@@ -155,12 +176,14 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
 			win.clearTimeout(tout);
 			tout = win.setTimeout(updateAll,34);//approx two frames...
 		}
-		
+		;
         
-        if(win.addEventListener)
-            win.addEventListener( 'resize',   resizeHandler, false);
+        if(win.addEventListener){
+			win.addEventListener( 'resize',              resizeHandler, false);
+			win.addEventListener( 'orientationchange',   resizeHandler, false);
+		}
         else 
-            win.attachEvent     ( 'onresize', resizeHandler       );
+            win.attachEvent( 'onresize', resizeHandler ); //we won't listen for orientationchange in IE8
     
     win.srcadapt = srcadapt;
 })(window,document);
