@@ -49,7 +49,8 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
         body   = doc.body || doc.getElementsByTagName('body')[0],
         doel   = doc.documentElement,
         
-        width  = Math.max(doel.clientWidth, win.innerWidth || 0),
+        //width  = Math.max(doel.clientWidth, win.innerWidth || 0),
+		width  = (function(){  if(win.innerWidth) return win.innerWidth; else return doel.clientWidth })(),
 
         isMaxWidth = function(num){
             return num > width
@@ -88,10 +89,14 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
                 _return;
             
             _a( available, function(index, member){
-                if( member==='data-xs' && isMaxWidth(767) )                     {_return = 'data-xs'; return}
+                /*if( member==='data-xs' && isMaxWidth(767) )                     {_return = 'data-xs'; return}
                 if( member==='data-sm' && isMinWidth(768) && !isMinWidth(992) ) {_return = 'data-sm'; return}
                 if( member==='data-md' && isMinWidth(992) && !isMinWidth(1200)) {_return = 'data-md'; return}
-                if( member==='data-lg' && isMinWidth(1200))                     {_return = 'data-lg'; return}
+                if( member==='data-lg' && isMinWidth(1200))                     {_return = 'data-lg'; return}*/
+				if( member==='data-xs' && isMaxWidth(767) ) {_return = 'data-xs';}
+                if( member==='data-sm' && isMinWidth(768) ) {_return = 'data-sm';}
+                if( member==='data-md' && isMinWidth(992) ) {_return = 'data-md';}
+                if( member==='data-lg' && isMinWidth(1200)) {_return = 'data-lg';}
             });            
             
             return _return;
@@ -109,7 +114,11 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
             if(node.src !== newsrc)
             node.src = newsrc;
         },
-        
+        /**
+         * 
+         * routes single element or NodeList
+         * to adapt()
+        **/
         doJob = function(nodeorcoll){
             if(Object.prototype.toString.call(nodeorcoll)==="[object NodeList]"){
                 _a(nodeorcoll, adapt);
@@ -127,19 +136,31 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
                 doJob(body.querySelectorAll(nodeorselector));
             }
         },
-        //For now, it seems to me that this function may run unbounced,
-        //because of inexpensiveness of calculation
-        //or maybe I'm wrong
-        
-        //ok, I'm wrong
-        updateDimension = function(){
-            width  = Math.max(doel.clientWidth, win.innerWidth || 0);
-        }
+		
+		getSrcadaptImgs = function(){
+			if(Element.prototype.getElementsByClassName)
+				return body.getElementsByClassName('srcadapt');
+			else return body.querySelectorAll('.srcadapt');
+		},
+		
+        updateAll = function(){
+            width  = (function(){  if(win.innerWidth) return win.innerWidth; else return doel.clientWidth })();
+			var srcadaptImgs = getSrcadaptImgs();
+			doJob(srcadaptImgs);
+        },
+		
+		tout,
+		
+		resizeHandler = function(){
+			win.clearTimeout(tout);
+			tout = win.setTimeout(updateAll,34);//approx two frames...
+		}
+		
         
         if(win.addEventListener)
-            win.addEventListener('resize',   updateDimension, false);
+            win.addEventListener( 'resize',   resizeHandler, false);
         else 
-            win.attachEvent     ('onresize', updateDimension       );
+            win.attachEvent     ( 'onresize', resizeHandler       );
     
     win.srcadapt = srcadapt;
 })(window,document);
