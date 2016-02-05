@@ -1,15 +1,14 @@
-/*
-*
+/**
+ * --------------------------------------
+ * -------------- srcadapt --------------
+ * --------------------------------------
+ * @description Easy and lightweight responsive image tool
+ * @author      Milos Djakonovic ( @Miloshio )
+ * @license     Licensed under the MIT license
+ * --------------------------------------
+**/
 
-USAGE
-<img src="" data-xs="" data-sm="" data-md="" data-""
-srcadapt('.selector' | Element, { force:false, delay:0 });
-
-*/
 (function(win,doc){
-    
-    
-    
 
     function _a(array,method){
       //if(Object.prototype.toString.call(array) !== '[object Array]') throw new Error('Fatal: _a method accepts only arrays.');
@@ -78,7 +77,7 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
          * @return ['data-xs','data-sm','data-md','data-lg']....
          *
         **/
-        getAllAvailable = function(node){
+        getAllAvailable = function(node){ //BUG. Here I get: regular img  element, HTML collection and undefined. Bug is not here.
             var available = [];
             _a(['xs','sm','md','lg'], function(index, member){
                 var attr = node.getAttribute('data-' + member);
@@ -100,11 +99,7 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
                 _return;
             
             _a( available, function(index, member){
-                /*if( member==='data-xs' && isMaxWidth(767) )                     {_return = 'data-xs'; return}
-                if( member==='data-sm' && isMinWidth(768) && !isMinWidth(992) ) {_return = 'data-sm'; return}
-                if( member==='data-md' && isMinWidth(992) && !isMinWidth(1200)) {_return = 'data-md'; return}
-                if( member==='data-lg' && isMinWidth(1200))                     {_return = 'data-lg'; return}*/
-				if( member==='data-xs' && isMaxWidth(767) ) {_return = 'data-xs';}
+                if( member==='data-xs' && isMaxWidth(767) ) {_return = 'data-xs';}
                 if( member==='data-sm' && isMinWidth(768) ) {_return = 'data-sm';}
                 if( member==='data-md' && isMinWidth(992) ) {_return = 'data-md';}
                 if( member==='data-lg' && isMinWidth(1200)) {_return = 'data-lg';}
@@ -131,15 +126,24 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
          * to adapt()
         **/
         doJob = function(nodeorcoll){
-            if(Object.prototype.toString.call(nodeorcoll)==="[object NodeList]"){
-                _a(nodeorcoll, adapt);
-            } else {
-                // -- --
-                adapt(nodeorcoll);
-            }
+			if(nodeorcoll.nodeName){
+				adapt(nodeorcoll);
+			} else {
+				//_a(nodeorcoll, function(i,member){ adapt(member) }  ); UGH
+				var templen = nodeorcoll.length;
+				for(var i=0; i<templen; i++){
+					adapt(nodeorcoll[i])
+				}
+			}
         },
-        
-        srcadapt = function(nodeorselector,params){
+        /**
+         * 
+         * main method exposed to global
+         * takes params and conducts actions
+		 * for now only one param
+		 *
+        **/        
+        srcadapt = function(nodeorselector, params){
             if(nodeorselector.nodeName){
                 //node
                 doJob(nodeorselector);
@@ -155,8 +159,8 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
 		**/
 		getSrcadaptImgs = function(){
 			if(Element.prototype.getElementsByClassName)
-				return body.getElementsByClassName('srcadapt');
-			else return body.querySelectorAll('.srcadapt');
+				return doel.getElementsByClassName('srcadapt');
+			else return doel.querySelectorAll('.srcadapt');
 		},
 		
         updateAll = function(){
@@ -182,8 +186,9 @@ srcadapt('.selector' | Element, { force:false, delay:0 });
 			win.addEventListener( 'resize',              resizeHandler, false);
 			win.addEventListener( 'orientationchange',   resizeHandler, false);
 		}
-        else 
+        else
             win.attachEvent( 'onresize', resizeHandler ); //we won't listen for orientationchange in IE8
-    
+	
+    //leech srcadapt to global namespace
     win.srcadapt = srcadapt;
 })(window,document);
