@@ -5,38 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>srcadapt</title>
-<script src="../srcadapt.js"></script>      
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+    <link href="http://code.jquery.com/qunit/qunit-1.21.0.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="http://code.jquery.com/qunit/qunit-1.21.0.js"></script>
+
+<script src="../srcadapt.js"></script>
 <style>
-    *{
-        margin:  0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    html{
-        width: 100%;
-        height: 100%;
-    }
-    body{
-        width: 100%;
-        height: 100%;
-        overflow-x: hidden;
-        overflow-y: auto;
-        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        font-size: 14px;
-        line-height: 1.4;
-        background: #72846B;
-        color: #FFF;
-    }
-    p{
-        margin-bottom: .75em;
-    }
+
+
+
+
+
 </style>
   </head>
   <body>
     
       
       
-      <div id="ex1">
+      <div>
         <p>Example image</p>
           
         <img src="img/demo500.jpg" class="srcadapt"
@@ -45,20 +33,27 @@
              data-md="img/demo1100.jpg"
              data-lg="img/demo1920.jpg" />
           
+
+
+
+        <img src="img/demo500.jpg" class="srcadapt"
+             data-xs="img/demo500.jpg"
+             data-sm="img/demo800.jpg"
+             data-md="img/demo1100.jpg"
+             data-lg="img/demo1920.jpg" alt="dasdas" />
+
       </div>
-      
-      
       
 
 
 <script>
-    window.onload = function(){
+
         
-        srcadapt( document.querySelector('.srcadapt')  )
+        //srcadapt( document.querySelectorAll('.srcadapt')  )
         
         
         
-    }
+
 </script>
   </body>
 </html>
