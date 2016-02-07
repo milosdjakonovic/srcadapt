@@ -3,14 +3,14 @@
 ###Easy and lightweight responsive image tool
 
 
-`srcadapt` is responsive image tool aimed to provide user with easy to start with way for specifying different image sources according to different screen sizes. It uses well known Bootstrap's viewport nomenclature, which means, in short
+`srcadapt` is responsive image tool aimed to provide user with method for specifying different image sources according to different screen sizes. It uses well known Bootstrap's viewport nomenclature which, in short, means:
 
 ```
 if you know how to use Bootstrap's grid, than you already know how to use srcadapt
 ```
 
-####How do srcadapt get images?
-short answer:
+####Example, mobile first image:
+
 ```
 <img src="images/imageofmax767px.jpg" alt="" class="srcadapt"
 data-xs="images/imageofmax767px.jpg"

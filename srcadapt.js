@@ -35,12 +35,13 @@
     body   = doc.body || doc.getElementsByTagName('body')[0],
     doel   = doc.documentElement,
 
-    //width  = Math.max(doel.clientWidth, win.innerWidth || 0),
+    // viewport width
     width  = (function(){
         if(win.innerWidth) return win.innerWidth;
         else return doel.clientWidth
     })(),
 
+    // Do we have 'native' media queries?
     nativemq = (function(){
         return ('matchMedia' in win) ? true : false
     } )(),
@@ -64,7 +65,7 @@
      * @return ['data-xs','data-sm','data-md','data-lg']....
      *
     **/
-    getAllAvailable = function(node){ //BUG. Here I get: regular img  element, HTML collection and undefined. Bug is not here.
+    getAllAvailable = function(node){
         var available = [];
         _a(['xs','sm','md','lg'], function(index, member){
             var attr = node.getAttribute('data-' + member);
@@ -174,7 +175,7 @@
             }
         }
     },
-
+    //is object an HTMLElement?
     isElement = function(obj){
          return (
             typeof HTMLElement === "object" ? obj instanceof HTMLElement :
@@ -182,7 +183,7 @@
         );
     },
 
-
+    //is object an HTMLCollection?
     isHTMLCollection = function(obj){
         return isElement(obj[0])
     },
@@ -249,7 +250,7 @@
         tout = win.setTimeout(updateAll,34);//approx two frames...
     }
     ;
-
+    //update all srcadapt images present
     srcadapt.all = function(){
         var srcadaptImgs = getSrcadaptImgs();
         doJob(srcadaptImgs);
