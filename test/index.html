@@ -13,8 +13,12 @@
 
 <script src="../srcadapt.js"></script>
 <style>
-
-
+    .widthrow{
+        margin-top: 35px;
+    }
+    img.srcadapt{
+        max-width: 100%;
+    }
 
 
 
@@ -22,11 +26,22 @@
   </head>
   <body>
     
+
       
       
-      <div>
-        <p>Example image</p>
-          
+<div class="container">
+
+    <div class="row widthrow">
+        <div class="col-xs-4 col-xs-offset-4">
+            <div class="alert alert-info">
+                <p>Viewport width: <kbd id="vw"></kbd>px</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+
         <img src="img/demo500.jpg" class="srcadapt"
              data-xs="img/demo500.jpg"
              data-sm="img/demo800.jpg"
@@ -36,22 +51,45 @@
 
 
 
-        <img src="img/demo500.jpg" class="srcadapt"
+        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" class="srcadapt"
              data-xs="img/demo500.jpg"
              data-sm="img/demo800.jpg"
              data-md="img/demo1100.jpg"
              data-lg="img/demo1920.jpg" alt="dasdas" />
 
-      </div>
+
+        </div>
+    </div>
+</div>
       
 
 
 <script>
+var $vw = $('#vw'),
+    width  = (function(){
+        if(window.innerWidth) return window.innerWidth;
+        else return document.documentElement.clientWidth
+    })(),
+    resizetimeout;
+    $vw.text(width);
 
+    $(window).on('resize', function(){
+        window.clearTimeout(resizetimeout);
+        resizetimeout = window.setTimeout(function(){
+            width  = (function(){
+                if(window.innerWidth) return window.innerWidth;
+                else return document.documentElement.clientWidth
+            })();
+            $vw.text(width);
+        },40);
+    });
+
+    srcadapt.all()
+    //srcadapt( document.querySelectorAll('.srcadapt')  )
         
-        //srcadapt( document.querySelectorAll('.srcadapt')  )
-        
-        
+$(function(){
+
+});
         
 
 </script>
