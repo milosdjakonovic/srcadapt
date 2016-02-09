@@ -1,5 +1,7 @@
 # srcadapt
 
+[![GitHub version](https://badge.fury.io/gh/milosdjakonovic%2Fsrcadapt.svg)](https://badge.fury.io/gh/milosdjakonovic%2Fsrcadapt)
+
 ### Easy and lightweight responsive image tool
 
 
@@ -24,7 +26,7 @@ data-md="images/imageofmin992.jpg"
 data-lg="images/imageofmin1200.jpg" />
 ```
 
-You have noticed that this image contains transparent 1px x 1px GIF as `src`. That is going to be "adapted". You have also noticed `data-xs`, `data-sm`, `data-md`, `data-lg` attributes which means, for those who haven't used Bootstrap's grid system:
+You have noticed that this image contains transparent 1x1px GIF as `src`. That is going to be "adapted". You have also noticed `data-xs`, `data-sm`, `data-md`, `data-lg` attributes which means, for those who haven't used Bootstrap's grid system:
 
 attr     | meaning
 -------- | ---
@@ -35,11 +37,11 @@ data-lg  | applies to min width of 1200px
 
 * Do I have to use all 4 attrs?
 
-No. You might just specify "mobile" (`data-xs`) image and `data-sm` for all other sizes.
+No. You might just specify one "mobile" (`data-xs`) image and one `data-sm` for all other sizes.
 
 ### What triggers adapting or ASAP problem
 
-You do, by using `srcadapt.all()` which iterates over DOM to find `.srcadapt` images and fix them accordingly, or `srcadapt(HTMLImageElement | HTMLCollection | querySelectorAll string)`.
+You do, by using `srcadapt.all()` which iterates over DOM to find `.srcadapt` images and fix them accordingly, or `srcadapt(HTMLImageElement | HTMLCollection | querySelectorAll string)` which adapts single image/collection according to passed param.
 In order for appropriate image to appear as soon as possible, you should call functions as soon as `<img>` markup appears.  
 
 Fastest (and ugliest) way is to insert `script` tag right after `img`, like this:
