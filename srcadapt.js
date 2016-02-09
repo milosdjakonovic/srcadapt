@@ -153,6 +153,8 @@
     adapt = function(node){
         var attrib = getApplicable(node),
         newsrc = node.getAttribute(attrib);
+        
+        if(is(attrib, "undefined")) return;
         //tricky part. Inserting relative URL to img src results in
         if(node.src !== newsrc && node.src !== doc.location.href + newsrc ){
             node.src = newsrc;
