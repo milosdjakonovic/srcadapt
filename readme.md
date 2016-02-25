@@ -1,6 +1,9 @@
 # srcadapt
 
 [![GitHub version](https://badge.fury.io/gh/milosdjakonovic%2Fsrcadapt.svg)](https://badge.fury.io/gh/milosdjakonovic%2Fsrcadapt)
+[![GitHub issues](https://img.shields.io/github/issues/milosdjakonovic/srcadapt.svg)](https://github.com/milosdjakonovic/srcadapt/issues)
+[![IE compatibility](https://img.shields.io/badge/IEcompatible-8+-blue.svg)](https://img.shields.io/badge/IEcompatible-8+-blue.svg)
+[![Dependencies](https://img.shields.io/badge/dependencies-none-green.svg)](https://img.shields.io/badge/dependencies-none-green.svg)
 
 ### Easy and lightweight responsive image tool
 
