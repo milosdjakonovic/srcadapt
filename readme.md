@@ -2,8 +2,8 @@
 
 [![GitHub version](https://badge.fury.io/gh/milosdjakonovic%2Fsrcadapt.svg)](https://badge.fury.io/gh/milosdjakonovic%2Fsrcadapt)
 [![GitHub issues](https://img.shields.io/github/issues/milosdjakonovic/srcadapt.svg)](https://github.com/milosdjakonovic/srcadapt/issues)
-[![IE compatibility](https://img.shields.io/badge/IEcompatible-8+-blue.svg)](https://img.shields.io/badge/IEcompatible-8+-blue.svg)
-[![Dependencies](https://img.shields.io/badge/dependencies-none-green.svg)](https://img.shields.io/badge/dependencies-none-green.svg)
+
+
 
 ### Easy and lightweight responsive image tool
 
@@ -13,13 +13,10 @@
 
 >  if you know how to use Bootstrap's grid, than you already know how to use srcadapt
 
-So, what this exactly means?
+### TLDR; USAGE
+Include `<script src="path/to/srcadapt.js"></script>` somewhere before first usage. Add `srcadapt` class and two or more `data-[dimension]` attributes to `<img />` element which `src` attribute is aimed to be "adapted". Call `srcadapt.all()` to adapt all designated images or `srcadapt(HTMLImageElement | HTMLCollection | querySelectorAll string)` specify exactly which one(s).
 
-First, you include `<script src="path/to/srcadapt.js"></script>` in document's `head` tag. Then you specify your **srcadapt** image.
-
-* What is **srcadapt** image?
-
-That's an image that has `srcadapt` class and one or more `data-[dimension]` attributes that contains path to related image. Like this:
+### EXAMPLE
 
 ```html
 <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="" class="srcadapt"
@@ -38,13 +35,11 @@ data-sm  | applies to **min** width of 768px
 data-md  | applies to min width of 992px
 data-lg  | applies to min width of 1200px
 
-* Do I have to use all 4 attrs?
-
+##### -Do I have to use all 4 attrs?
 No. You might just specify one "mobile" (`data-xs`) image and one `data-sm` for all other sizes.
 
-### What triggers adapting or ASAP problem
+### ASAP adapting
 
-You do, by using `srcadapt.all()` which iterates over DOM to find `.srcadapt` images and fix them accordingly, or `srcadapt(HTMLImageElement | HTMLCollection | querySelectorAll string)` which adapts single image/collection according to passed param.
 In order for appropriate image to appear as soon as possible, you should call functions as soon as `<img>` markup appears.  
 
 Fastest (and ugliest) way is to insert `script` tag right after `img`, like this:
@@ -58,15 +53,10 @@ data-lg="images/imageofmin1200.jpg" />
 <script>srcadapt( document.getElementById('myImg') )</script>
 ```
 
-* Do I lose (have cancelled) one HTTP request when appropriate image get in place previous one?
+##### -What happens on resize?
+just what should happen, all images gets updated. 
 
-Yes, and this is inevitable scenario. Request get cancelled and new one starts to provide adequate image. However, I haven't found this to be much of an issue in my projects. More authoritative note here is welcome.
-
-* What happens on resize?
-
-just what should happen, all images gets updated. It is planned to let user to be in control in this behavior i.e. `onresize: false` for single image elements.
-
-* What is browser support for this?
+#### Browser support
 
 in short, works in IE8. Tested on: 
 - Chrome current, 
@@ -86,5 +76,4 @@ srcadapt.offAdapt(callback)  | removes callback from being executed whenever any
 
 ## Contribution
 
-One word: **TESTS**. Srcadapt badly needs tests. I'm using code from which I built this project for a while, but this needs to be thoroughly tested against devices and frameworks.
-
+One word: **TESTS**.
